@@ -1,5 +1,7 @@
 package com.handler.api.service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,13 @@ public class PersonService {
 	private PersonRepository personRepository;
 	
 	public Person create(String firstName, String lastName, int age) {
-		return personRepository.save(new Person(firstName, lastName, age));
+		return personRepository.save(Person
+			.builder()
+			.firstName(firstName)
+			.lastName(lastName)
+			.age(age)
+			.lastUpdate(LocalDateTime.now())
+			.build());
 		
 	}
 	
@@ -34,6 +42,7 @@ public class PersonService {
 	public Person update(String firstName, int age) {
 		Person p = personRepository.findByFirstName(firstName);
 		p.setAge(age);
+		p.setLastUpdate(LocalDateTime.now());
 		return personRepository.save(p);
 	}
 	

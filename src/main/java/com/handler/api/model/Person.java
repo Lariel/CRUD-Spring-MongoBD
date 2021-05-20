@@ -1,13 +1,19 @@
 package com.handler.api.model;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Document
 public class Person {
 	@Id
@@ -15,12 +21,7 @@ public class Person {
 	String firstName;
 	String lastName;
 	int age;
-	
-	public Person(String firstName, String lastName, int age) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.age = age;
-	}
+	LocalDateTime lastUpdate;
 
 	public String getId() {
 		return id;
