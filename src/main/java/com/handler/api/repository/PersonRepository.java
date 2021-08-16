@@ -9,6 +9,9 @@ import com.handler.api.model.Person;
 
 @Repository
 public interface PersonRepository extends MongoRepository<Person,String> {
-	public Person findByFirstName(String firstName);
+
 	public List<Person> findByAge(int age);
+	public List<Person> findByFirstNameAndLastName(String firstName, String lastName);
+	public List<Person> findByFirstName(String firstName);
+	public List<Person> findByLastName(String lastName);
 }

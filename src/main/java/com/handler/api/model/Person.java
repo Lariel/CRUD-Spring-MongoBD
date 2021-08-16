@@ -1,6 +1,8 @@
 package com.handler.api.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,84 +19,39 @@ import lombok.NoArgsConstructor;
 @Document
 public class Person {
 	@Id
-	String id;
-	String firstName;
-	String lastName;
-	int age;
-	LocalDateTime lastUpdate;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + age;
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Person other = (Person) obj;
-		if (age != other.age)
-			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		return true;
-	}
+	private String id;
+	private String firstName;
+	private String lastName;
+	private LocalDate birthday;
+	private String gender;
+	private String cpf;
+	private LocalDateTime created;
+	private LocalDateTime lastUpdate;
 	
-	
-	
+	public String getAge() {
+		final var hoje = LocalDate.now();
+		Period periodo = Period.between(birthday, hoje);
+		StringBuilder idade = new StringBuilder();
+		idade.append(periodo.getYears());
+		idade.append(" anos, ");
+		idade.append(periodo.getMonths());
+		idade.append(" meses, ");
+		idade.append(periodo.getDays());
+		idade.append(" dias.");
+		return idade.toString();
+	}
+
+	public static Person buildFromDto(PersonDto person) {
+		return Person
+			.builder()
+			.id(person.getId())
+			.firstName(person.getFirstName())
+			.lastName(person.getLastName())
+			.birthday(person.getBirthDay())
+			.gender(person.getGender())
+			.cpf(person.getCpf())
+			.lastUpdate(person.getLastUpdate())
+			.created(person.getCreated())
+			.build();
+	}	
 }
