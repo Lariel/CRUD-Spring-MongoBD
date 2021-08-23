@@ -23,7 +23,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         .apis(RequestHandlerSelectors.basePackage("com.handler.api.controller"))
         .build()
         .apiInfo(metaData());
-
   }
 
   private ApiInfo metaData() {

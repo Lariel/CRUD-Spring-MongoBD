@@ -10,10 +10,13 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.handler.api.model.Person;
 import com.handler.api.model.PersonDto;
 import com.handler.api.repository.PersonRepository;
 
+@Slf4j
 @Service
 public class PersonService {
 	
@@ -31,6 +34,7 @@ public class PersonService {
 	public List<PersonDto> searchPersonBy(
 		String firstName,
 		String lastName) {
+			log.info("buscando pessoa");
 			if (Objects.isNull(firstName) && Objects.isNull(lastName)) {
 				return personRepository
 					.findAll()
