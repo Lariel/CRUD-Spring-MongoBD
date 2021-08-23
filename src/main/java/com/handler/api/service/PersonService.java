@@ -24,6 +24,7 @@ public class PersonService {
 	private PersonRepository personRepository;
 	
 	public PersonDto create(PersonDto person) {
+		log.info("Criando pessoa.");
 		person.setId(null);
 		person.setCreated(LocalDateTime.now());
 		person.setLastUpdate(LocalDateTime.now());
@@ -34,8 +35,12 @@ public class PersonService {
 	public List<PersonDto> searchPersonBy(
 		String firstName,
 		String lastName) {
-			log.info("buscando pessoa");
+			log.debug("teste log debug");
+			log.info("teste log info");
+			log.warn("teste log warn");
+			log.error("teste log error");
 			if (Objects.isNull(firstName) && Objects.isNull(lastName)) {
+				log.info("Pesquisando pessoas.");
 				return personRepository
 					.findAll()
 					.stream()
@@ -43,6 +48,7 @@ public class PersonService {
 					.collect(Collectors.toList());
 			}
 			if (Objects.isNull(firstName)) {
+				log.info("Pesquisando pessoas por sobrenome.");
 				return personRepository
 					.findByLastName(lastName)
 					.stream()
@@ -50,12 +56,14 @@ public class PersonService {
 					.collect(Collectors.toList());
 			}
 			if (Objects.isNull(lastName)) {
+				log.info("Pesquisando pessoas por nome.");
 				return personRepository
 					.findByFirstName(firstName)
 					.stream()
 					.map(PersonDto::buildFromDocument)
 					.collect(Collectors.toList());
 			}
+			log.info("Pesquisando pessoas por nome e sobrenome.");
 			return personRepository
 				.findByFirstNameAndLastName(firstName, lastName)
 				.stream()
@@ -64,6 +72,7 @@ public class PersonService {
 	}
 
 	public PersonDto getBy(String id) {
+		log.info("Buscando pessoa por id.");
 		return Stream.of(personRepository.findById(id))
 			.filter(Objects::nonNull)
 			.filter(Optional::isPresent)
@@ -74,6 +83,7 @@ public class PersonService {
 	}
 	
 	public void update(PersonDto person, PersonDto personDocument) {
+		log.info("Atualizando pessoa.");
 		person.setCreated(personDocument.getCreated());
 		person.setLastUpdate(LocalDateTime.now());
 		PersonDto.buildFromDocument(
@@ -81,11 +91,13 @@ public class PersonService {
 	}
 	
 	public void deleteById(String id) {
+		log.info("Excluindo pessoa por id.");
 		Person p = personRepository.findById(id).get();
 		personRepository.delete(p);
 	}
 	
 	public void deleteAll() {
+		log.warn("Limpando a base de pessoas.");
 		personRepository.deleteAll();
 	}
 
